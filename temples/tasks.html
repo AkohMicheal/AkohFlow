@@ -1,0 +1,18 @@
+{%extends "layout.html"%}
+{%block content%}
+<h1>Tasks</h1>
+<p>Manage your tasks efficiently!</p>
+<ul>
+    {% for task in tasks %}
+        <li><strong>{{ task.title }}</strong><br>
+            {{ task.description }}<br>
+            {% if task.completed %}
+                <span class="completed">Completed</span>
+            {% else %}
+                <span class="not-completed">Not Completed</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+<!--Displays task from the database-->
+{%endblock%}
