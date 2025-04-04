@@ -4,12 +4,15 @@
 <p>Manage your tasks efficiently!</p>
 <ul>
     {% for task in tasks %}
-        <li><strong>{{ task.title }}</strong><br>
-            {{ task.description }}<br>
+        <li>
+            <strong>{{ task.title }}
+            </strong><br>
+            {{ task.description }}
+            <br>
             {% if task.completed %}
-                <span class="completed">Completed</span>
+                <span>Status: Completed</span>
             {% else %}
-                <span class="not-completed">Not Completed</span>
+                <span>Status: Incompleted</span>
             {% endif %}
         </li>
     {% endfor %}
