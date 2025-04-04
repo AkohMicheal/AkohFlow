@@ -5,4 +5,29 @@
     {% for task in tasks %}
         <p>{{ task.title }} - {{ task.description }}</p>
     {% endfor %}
-{% endblock %}
+
+<br>
+
+   <h1>Add New Task</h1>
+
+   <!-- Form to add a new task -->
+   <form action="/add_task" method="POST">
+       <input type="text" name="title" placeholder="Task Title" required>
+       <textarea name="description" placeholder="Task Description"></textarea>
+       <button type="submit">Add Task</button>
+   </form>
+
+   <ul>
+       {% for task in tasks %}
+           <li>
+               <strong>{{ task.title }}</strong><br>
+               {{ task.description }}<br>
+               {% if task.complete %}
+                   <span>Status: Complete</span>
+               {% else %}
+                   <span>Status: Incomplete</span>
+               {% endif %}
+           </li>
+       {% endfor %}
+   </ul>
+   {% endblock %}

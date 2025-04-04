@@ -62,3 +62,29 @@ def tasks():
 if __name__ == '__main__':
     app.run(debug=True)
 # This runs the application in debug mode, which is useful for development.
+
+from flask import Flask, request, redirect, url_for
+# This imports the Flask class from the flask module and creates an instance of it.
+@app.route('/add_task', methods=['POST'])
+def add_task():
+    title = request.form['title']
+    description = request.form['description']
+    new_task = Task(title=title, description=description)
+    db.session.add(new_task)
+    db.session.commit()
+    return redirect(url_for('tasks'))
+# This defines the add_task route to handle form submissions for adding new tasks.
+@app.route('/delete_task/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    task_to_delete = Task.query.get_or_404(task_id)
+    db.session.delete(task_to_delete)
+    db.session.commit()
+    return redirect(url_for('tasks'))
+# This defines the delete_task route to handle form submissions for deleting tasks.
+@app.route('/update_task/<int:task_id>', methods=['POST'])
+def update_task(task_id):
+    task_to_update = Task.query.get_or_404(task_id)
+    task_to_update.completed = not task_to_update.completed
+    db.session.commit()
+    return redirect(url_for('tasks'))
+# This defines the update_task route to handle form submissions for updating tasks.
