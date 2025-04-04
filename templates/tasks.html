@@ -1,7 +1,9 @@
 {%extends "layout.html"%}
+
 {%block content%}
 <h1>Tasks</h1>
-<p>Manage your tasks efficiently!</p>
+<p>Here are the tasks:</p>
+<!-- Displays a list of tasks from the database -->
 <ul>
     {% for task in tasks %}
         <li>

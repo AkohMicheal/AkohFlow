@@ -57,6 +57,7 @@ def home():
 @app.route('/tasks')
 def tasks():
     all_tasks = Task.query.all()
+    print(all_tasks)  # Debugging
     return render_template('tasks.html', tasks=all_tasks)
 # This defines the tasks route and renders a template for it.
 if __name__ == '__main__':
