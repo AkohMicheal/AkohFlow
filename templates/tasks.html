@@ -1,23 +1,8 @@
-{%extends "layout.html"%}
+{% extends "layout.html" %}
 
-{%block content%}
-<h1>Tasks</h1>
-<p>Here are the tasks:</p>
-<!-- Displays a list of tasks from the database -->
-<ul>
+{% block content %}
+    <h1>Tasks</h1>
     {% for task in tasks %}
-        <li>
-            <strong>{{ task.title }}
-            </strong><br>
-            {{ task.description }}
-            <br>
-            {% if task.completed %}
-                <span>Status: Completed</span>
-            {% else %}
-                <span>Status: Incompleted</span>
-            {% endif %}
-        </li>
+        <p>{{ task.title }} - {{ task.description }}</p>
     {% endfor %}
-</ul>
-<!--Displays task from the database-->
-{%endblock%}
+{% endblock %}

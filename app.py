@@ -32,7 +32,6 @@ if __name__ == '__main__':
 
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-import os
 # This imports the Flask class from the flask module and creates an instance of it.
 app = Flask(__name__)
 # This sets up a basic Flask application.
