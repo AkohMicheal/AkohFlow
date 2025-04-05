@@ -4,28 +4,57 @@
     <h1>Tasks</h1>
 
     <!-- Form to add a new task -->
-   <form action="/add_task" method="POST">
-    <input type="text" name="title" placeholder="Task Title" required>
-    <textarea name="description" placeholder="Task Description"></textarea>
-    <button type="submit">Add Task</button>
-</form>
-<ul>
-    {% for task in tasks %}
-        <li>
-            <strong>{{ task.title }}</strong><br>
-            {{ task.description }}<br>
-            {% if task.complete %}
-                <span>Status: Complete</span>
-            {% else %}
-                <span>Status: Incomplete</span>
-            {% endif %}
-            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
-                <button type="submit">Delete</button>
-            </form>
-            <form action="{{ url_for('update_task', task_id=task.id) }}" method="POST">
-                <button type="submit">Toggle Status</button>
-            </form>
-        </li>
-    {% endfor %}
-</ul>
+    <form action="/add_task" method="POST">
+        <input type="text" name="title" placeholder="Task Title" required>
+        <textarea name="description" placeholder="Task Description"></textarea>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Display error or success messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- List of tasks -->
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ task.title }}</strong><br>
+                {{ task.description }}<br>
+                {% if task.completed %}
+                    <span>Status: Complete</span>
+                {% else %}
+                    <span>Status: Incomplete</span>
+                {% endif %}
+                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+                <form action="{{ url_for('update_task', task_id=task.id) }}" method="POST">
+                    <button type="submit">Toggle Status</button>
+                </form>
+                <form action="{{ url_for('edit_task', task_id=task.id) }}" method="GET">
+                    <button type="submit">Edit</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if pagination and pagination.has_prev %}
+            <a href="{{ url_for('tasks', page=pagination.prev_num) }}">Previous</a>
+        {% endif %}
+        {% if pagination %}
+            <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+        {% endif %}
+        {% if pagination and pagination.has_next %}
+            <a href="{{ url_for('tasks', page=pagination.next_num) }}">Next</a>
+        {% endif %}
+    </div>
 {% endblock %}
