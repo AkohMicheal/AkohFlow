@@ -18,6 +18,7 @@ h1 {
 
 form {
     margin-bottom: 20px;
+    display: inline;
 }
 
 input, textarea, button {
