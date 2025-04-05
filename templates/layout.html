@@ -13,25 +13,11 @@
             <a href="{{ url_for('tasks') }}">Tasks</a>
         </nav>
         <div class="file-structure">
+            <h2>TASK MANAGEMENT DASHBOARD</h2>
             <ul>
-                <li>task_management_app/
-                    <ul>
-                        <li>app.py</li>
-                        <li>templates/
-                            <ul>
-                                <li>layout.html</li>
-                                <li>tasks.html</li>
-                            </ul>
-                        </li>
-                        <li>static/
-                            <ul>
-                                <li>styles.css</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                <li><a href="{{ url_for('index') }}">The Main DASHBOARD</a></li>
+                <li><a href="{{ url_for('tasks') }}">Task LISTS</a></li>
             </ul>
-        </div>
         {% block content %}
         {% endblock %}
     </div>
