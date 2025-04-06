@@ -5,10 +5,16 @@
         <h1 class="mb-4">Tasks</h1>
 
         <!-- Form to add a new task -->
-        <form action="/add_task" method="POST" class="mb-4">
-            <input type="text" name="title" class="form-control mb-2" placeholder="Task Title" required>
-            <textarea name="description" class="form-control mb-2" placeholder="Task Description"></textarea>
-            <button type="submit" class="btn btn-success">Add Task</button>
+        <form method="POST" action="{{ url_for('add_task') }}">
+            <div>
+                <label for="title">Task Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            <div>
+                <label for="description">Task Description</label>
+                <textarea id="description" name="description"></textarea>
+            </div>
+            <button type="submit">Add Task</button>
         </form>
 
         <!-- Search and Filter Form -->

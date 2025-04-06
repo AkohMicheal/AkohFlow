@@ -108,9 +108,24 @@ def tasks():
         elif filter_status == "incomplete":
             query = query.filter_by(complete=False)
 
-    # Use keyword arguments for paginate
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query, filter_status=filter_status)
+
+@app.route('/add_task', methods=['POST'])
+@login_required
+def add_task():
+    title = request.form.get('title')
+    description = request.form.get('description')
+
+    if not title:
+        flash('Task title is required!', 'danger')
+        return redirect(url_for('tasks'))
+
+    new_task = Task(title=title, description=description, user_id=current_user.id)
+    db.session.add(new_task)
+    db.session.commit()
+    flash('Task added successfully!', 'success')
+    return redirect(url_for('tasks'))
 
 @app.route('/toggle_task/<int:task_id>', methods=['POST'])
 @login_required
@@ -121,7 +136,38 @@ def toggle_task(task_id):
 
     task.complete = not task.complete
     db.session.commit()
-    return jsonify({'complete': task.complete})
+    return jsonify({'completed': task.complete})
+
+@app.route('/delete_task/<int:task_id>', methods=['POST'])
+@login_required
+def delete_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        flash('You are not authorized to delete this task.', 'danger')
+        return redirect(url_for('tasks'))
+
+    db.session.delete(task)
+    db.session.commit()
+    flash('Task deleted successfully!', 'success')
+    return redirect(url_for('tasks'))
+
+@app.route('/edit_task/<int:task_id>', methods=['GET', 'POST'])
+@login_required
+def edit_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        flash('You are not authorized to edit this task.', 'danger')
+        return redirect(url_for('tasks'))
+
+    if request.method == 'POST':
+        task.title = request.form.get('title')
+        task.description = request.form.get('description')
+        task.complete = 'complete' in request.form  # Checkbox for marking complete
+        db.session.commit()
+        flash('Task updated successfully!', 'success')
+        return redirect(url_for('tasks'))
+
+    return render_template('edit_task.html', task=task)
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
