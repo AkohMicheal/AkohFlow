@@ -12,8 +12,8 @@ import os
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///tasks.db')
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = '988e9c1efae084bb4c8bdfee28472a2f'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
