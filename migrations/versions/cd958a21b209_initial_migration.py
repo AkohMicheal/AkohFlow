@@ -31,6 +31,19 @@ def upgrade():
             sa.UniqueConstraint('email')
         )
 
+    # Check if the 'task' table exists
+    if 'task' not in inspector.get_table_names():
+        op.create_table(
+            'task',
+            sa.Column('id', sa.Integer(), nullable=False),
+            sa.Column('title', sa.String(length=150), nullable=False),
+            sa.Column('description', sa.String(length=200), nullable=True),
+            sa.Column('user_id', sa.Integer(), nullable=False),
+            sa.Column('complete', sa.Boolean(), nullable=False, default=False),
+            sa.PrimaryKeyConstraint('id'),
+            sa.ForeignKeyConstraint(['user_id'], ['user.id'], name='fk_task_user_id')
+        )
+
     # Other migration commands
     with op.batch_alter_table('task', schema=None) as batch_op:
         batch_op.alter_column('description',
@@ -54,6 +67,9 @@ def downgrade():
                existing_type=sa.String(length=200),
                type_=sa.TEXT(),
                existing_nullable=True)
+
+    # Drop the task table
+    op.drop_table('task')
 
     # Drop the user table
     op.drop_table('user')
