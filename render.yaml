@@ -5,5 +5,5 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-      flask db upgrade  # Run migrations during the build process
+      flask db upgrade  # Apply migrations during the build process
     startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT"
