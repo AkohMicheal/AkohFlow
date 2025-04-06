@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from sqlalchemy import or_
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
@@ -16,6 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+migrate = Migrate(app, db)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -49,11 +51,19 @@ class LoginForm(FlaskForm):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.route('/')
+def home():
+    return render_template('index.html')  # Render the homepage
+
+@app.route('/index')
+def index():
+    return redirect(url_for('home'))  # Redirect to the homepage
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
         new_user = User(email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
@@ -98,14 +108,38 @@ def tasks():
         elif filter_status == "incomplete":
             query = query.filter_by(complete=False)
 
-    pagination = query.paginate(page, per_page, error_out=False)
+    # Use keyword arguments for paginate
+    pagination = query.paginate(page=page, per_page=per_page, error_out=False)
     return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query, filter_status=filter_status)
+
+@app.route('/toggle_task/<int:task_id>', methods=['POST'])
+@login_required
+def toggle_task(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    task.complete = not task.complete
+    db.session.commit()
+    return jsonify({'complete': task.complete})
+
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    user_feedback = request.form.get('feedback')
+    if user_feedback:
+        # Save feedback to the database or process it as needed
+        flash('Thank you for your feedback!', 'success')
+    else:
+        flash('Feedback cannot be empty.', 'danger')
+    return redirect(url_for('register'))
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)

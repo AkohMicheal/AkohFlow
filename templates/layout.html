@@ -7,28 +7,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('tasks') }}">Tasks</a>
-        </nav>
-        <div class="file-structure">
-            <h2>TASK MANAGEMENT DASHBOARD</h2>
-            <ul>
-                <li><a href="{{ url_for('index') }}">The Main DASHBOARD</a></li>
-                <li><a href="{{ url_for('tasks') }}">Task LISTS</a></li>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav id="navbar" class="navbar">
+            <ul id="navbar-menu">
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('tasks') }}">Tasks</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
             </ul>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for category, message in messages %}
-                        <li class="{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-        {% block content %}
-        {% endblock %}
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>AkohTech Cor. 2025 VER2.1</p>
+    </footer>
 </body>
 </html>

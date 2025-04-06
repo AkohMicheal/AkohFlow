@@ -13,11 +13,20 @@
        </div>
        <div>
            {{ form.password.label }}<br>
-           {{ form.password(size=32) }}<br>
+           {{ form.password(size=32, id="password") }}<br>
+           <label for="show-password">
+               <input type="checkbox" id="show-password" title="Show or hide password" onclick="togglePassword()"> Show Password
+           </label>
            {% for error in form.password.errors %}
                <span>[{{ error }}]</span>
            {% endfor %}
        </div>
        {{ form.submit() }}
    </form>
+   <script>
+       function togglePassword() {
+           const passwordField = document.getElementById("password");
+           passwordField.type = passwordField.type === "password" ? "text" : "password";
+       }
+   </script>
    {% endblock %}
