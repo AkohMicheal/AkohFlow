@@ -23,7 +23,8 @@ app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = "login"
+login_manager.init_app(app)
 migrate = Migrate(app, db)
 
 class User(db.Model, UserMixin):
@@ -31,7 +32,7 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.String(150), nullable=False)
+    password = db.Column(db.String(150), nullable=False)  # Ensure this column exists
 
 
 class Task(db.Model):
@@ -86,6 +87,9 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         # Hash the password for security
+        if form.password.data is None:
+            flash('Password cannot be empty.', 'danger')
+            return redirect(url_for('register'))
         hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
         
         # Create a new user instance
