@@ -1,25 +1,27 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="jumbotron text-center mt-4">
-        <h1 class="display-4">Welcome to TaskMaster!</h1>
-        <p class="lead">Your personal task management app to help you stay organized and on track.</p>
-        <hr class="my-4">
-        <p>Effortlessly manage your tasks with features like search, filter, and real-time updates. Join us today and start achieving more with less effort!</p>
-        <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started</a>
-    </div>
-    <div class="text-center mt-4">
-        <h2>Features</h2>
-        <ul class="list-unstyled">
-            <li>✔️ Create, edit, and delete tasks</li>
-            <li>✔️ Search and filter tasks</li>
-            <li>✔️ Mark tasks as complete or incomplete</li>
-            <li>✔️ User authentication and session management</li>
-        </ul>
-        <h2>Why Choose Us?</h2>
-        <p>TaskMaster is designed to be user-friendly and efficient. Whether you're a student, professional, or anyone in between, our app will help you manage your tasks effectively.</p>
-        <p>Join our community of users and start your journey towards better task management today!</p>
-        <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
-        <a class="btn btn-secondary btn-lg" href="{{ url_for('register') }}" role="button">Register</a>
-    </div>    
+<div class="jumbotron text-center mt-4">
+    <h1 class="display-4">Welcome to TaskMaster!</h1>
+    <p class="lead">Your personal task management app to help you stay organized and on track.</p>
+    <hr class="my-4">
+    <p>Effortlessly manage your tasks with features like search, filter, and real-time updates. Join us today and start achieving more with less effort!</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started</a>
+</div>
+
+<div class="text-center mt-4">
+    <h2>Features</h2>
+    <ul class="list-unstyled">
+        <li>✔️ Create, edit, and delete tasks</li>
+        <li>✔️ Search and filter tasks</li>
+        <li>✔️ Mark tasks as complete or incomplete</li>
+        <li>✔️ User authentication and session management</li>
+    </ul>
+
+    <h2>Why Choose Us?</h2>
+    <p>TaskMaster is designed to be user-friendly and efficient. Whether you're a student, professional, or anyone in between, our app will help you manage your tasks effectively.</p>
+    <p>Join our community of users and start your journey towards better task management today!</p>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('register') }}" role="button">Register</a>
+</div>
 {% endblock %}

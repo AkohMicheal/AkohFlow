@@ -8,36 +8,29 @@
         {{ form.email.label }}<br>
         {{ form.email(size=32) }}<br>
         {% for error in form.email.errors %}
-            <span>[{{ error }}]</span>
+            <span class="error-message">{{ error }}</span>
         {% endfor %}
     </div>
     <div>
         {{ form.password.label }}<br>
         {{ form.password(size=32, id="password") }}<br>
-        <label for="show-password">
-            <input type="checkbox" id="show-password" title="Show or hide password" onclick="togglePassword()"> Show Password
+        <label>
+            <input type="checkbox" id="show-password" onclick="togglePassword()"> Show Password
         </label>
         {% for error in form.password.errors %}
-            <span>[{{ error }}]</span>
+            <span class="error-message">{{ error }}</span>
         {% endfor %}
     </div>
-    <script>
-        function togglePassword() {
-            const passwordField = document.getElementById("password");
-            passwordField.type = passwordField.type === "password" ? "text" : "password";
-        }
-    </script>
     <div>
         {{ form.confirm_password.label }}<br>
         {{ form.confirm_password(size=32) }}<br>
         {% for error in form.confirm_password.errors %}
-            <span>[{{ error }}]</span>
+            <span class="error-message">{{ error }}</span>
         {% endfor %}
     </div>
     {{ form.submit() }}
 </form>
 
-<!-- Feedback Option -->
 <div class="mt-4">
     <h4>Feedback</h4>
     <form method="POST" action="{{ url_for('feedback') }}">
@@ -45,11 +38,17 @@
         <button type="submit" class="btn btn-primary">Submit Feedback</button>
     </form>
 </div>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById("password");
+        passwordField.type = passwordField.type === "password" ? "text" : "password";
+    }
+</script>
 {% endblock %}
 
-<!-- Footer -->
 {% block footer %}
 <footer class="text-center mt-4">
-    <p>AkohTech Cor. 2025 VER2.1</p>
+    <p>&copy; AkohTech Cor. 2025 VER2.1</p>
 </footer>
 {% endblock %}

@@ -3,23 +3,20 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Ignore all log files
+# Log files
 *.log
 
-# Ignore the node_modules directory
-node_modules/
-
-# Ignore all files in the dist folder
-dist/
-
-# Distribution / packaging
-.Python
+# Virtual environments
 env/
 venv/
 ENV/
+.venv/
+.Python
+
+# Distribution / packaging
 build/
-develop-eggs/
 dist/
+develop-eggs/
 downloads/
 eggs/
 .eggs/
@@ -36,6 +33,7 @@ MANIFEST
 # Flask specific
 instance/
 .webassets-cache
+flask_session/
 
 # PyInstaller
 *.manifest
@@ -62,24 +60,11 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-
-# Sphinx documentation
+# Documentation
 docs/_build/
 
 # PyBuilder
 target/
-
-# Flask cache and session files
-flask_session/
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
 
 # IDEs and editors
 .idea/
@@ -97,3 +82,6 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# Environment variables
+.env

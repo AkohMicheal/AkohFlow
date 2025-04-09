@@ -1,32 +1,32 @@
 {% extends "layout.html" %}
 
-   {% block content %}
-   <h2>Login</h2>
-   <form method="POST" action="{{ url_for('login') }}">
-       {{ form.hidden_tag() }}
-       <div>
-           {{ form.email.label }}<br>
-           {{ form.email(size=32) }}<br>
-           {% for error in form.email.errors %}
-               <span>[{{ error }}]</span>
-           {% endfor %}
-       </div>
-       <div>
-           {{ form.password.label }}<br>
-           {{ form.password(size=32, id="password") }}<br>
-           <label for="show-password">
-               <input type="checkbox" id="show-password" title="Show or hide password" onclick="togglePassword()"> Show Password
-           </label>
-           {% for error in form.password.errors %}
-               <span>[{{ error }}]</span>
-           {% endfor %}
-       </div>
-       {{ form.submit() }}
-   </form>
-   <script>
-       function togglePassword() {
-           const passwordField = document.getElementById("password");
-           passwordField.type = passwordField.type === "password" ? "text" : "password";
-       }
-   </script>
-   {% endblock %}
+{% block content %}
+<h2>Login</h2>
+<form method="POST" action="{{ url_for('login') }}">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.email.label }}<br>
+        {{ form.email(size=32) }}<br>
+        {% for error in form.email.errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.password.label }}<br>
+        {{ form.password(size=32, id="password") }}<br>
+        <label>
+            <input type="checkbox" id="show-password" onclick="togglePassword()"> Show Password
+        </label>
+        {% for error in form.password.errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {{ form.submit() }}
+</form>
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById("password");
+        passwordField.type = passwordField.type === "password" ? "text" : "password";
+    }
+</script>
+{% endblock %}

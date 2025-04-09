@@ -1,6 +1,6 @@
 from app import db, Task
 
-# Create the database and add sample tasks
+# Initialize the database and add a sample task
 with db.app_context():
     db.create_all()
     sample_task = Task(title="Sample Task", description="This is a sample task.")

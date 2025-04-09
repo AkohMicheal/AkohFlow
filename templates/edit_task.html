@@ -4,19 +4,17 @@
 <div class="container mt-4">
     <h1>Edit Task</h1>
     <form method="POST" action="{{ url_for('edit_task', task_id=task.id) }}">
-        <div>
+        <div class="mb-3">
             <label for="title">Task Title</label>
-            <input type="text" id="title" name="title" value="{{ task.title }}" required>
+            <input type="text" id="title" name="title" value="{{ task.title }}" class="form-control" required>
         </div>
-        <div>
+        <div class="mb-3">
             <label for="description">Task Description</label>
-            <textarea id="description" name="description">{{ task.description }}</textarea>
+            <textarea id="description" name="description" class="form-control">{{ task.description }}</textarea>
         </div>
-        <div>
-            <label>
-                <input type="checkbox" name="complete" {% if task.complete %}checked{% endif %}>
-                Mark as Complete
-            </label>
+        <div class="form-check mb-3">
+            <input type="checkbox" id="complete" name="complete" class="form-check-input" {% if task.complete %}checked{% endif %}>
+            <label for="complete" class="form-check-label">Mark as Complete</label>
         </div>
         <button type="submit" class="btn btn-primary">Save Changes</button>
         <a href="{{ url_for('tasks') }}" class="btn btn-secondary">Cancel</a>
