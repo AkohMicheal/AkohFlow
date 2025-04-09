@@ -10,14 +10,16 @@ from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
 
-from dotenv import load_dotenv
+# Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+class Config:
+    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "postgresql://<username>:<password>@<host>:<port>/<database>")
+    SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', 'postgresql://<username>:<password>@<host>:<port>/<database>')
-app.config['SECRET_KEY'] = '988e9c1efae084bb4c8bdfee28472a2f'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app = Flask(__name__)
+app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -26,7 +28,6 @@ migrate = Migrate(app, db)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
-    __table_args__ = {'schema': 'custom_schema_name'}  # Replace with your schema name
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -35,13 +36,12 @@ class User(db.Model, UserMixin):
 
 class Task(db.Model):
     __tablename__ = 'task'
-    __table_args__ = {'schema': 'custom_schema_name'}  # Replace with your schema name
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200))
     complete = db.Column(db.Boolean, default=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('custom_schema_name.user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
