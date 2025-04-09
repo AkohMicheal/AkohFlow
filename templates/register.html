@@ -13,10 +13,7 @@
     </div>
     <div>
         {{ form.password.label }}<br>
-        {{ form.password(size=32, id="password") }}<br>
-        <label>
-            <input type="checkbox" id="show-password" onclick="togglePassword()"> Show Password
-        </label>
+        {{ form.password(size=32) }}<br>
         {% for error in form.password.errors %}
             <span class="error-message">{{ error }}</span>
         {% endfor %}
@@ -34,7 +31,7 @@
 <div class="mt-4">
     <h4>Feedback</h4>
     <form method="POST" action="{{ url_for('feedback') }}">
-        <textarea name="feedback" class="form-control mb-2" rows="3" placeholder="Tell us about your experience using this app..."></textarea>
+        <textarea name="feedback" class="form-control mb-2" rows="3" placeholder="Tell us about your experience..."></textarea>
         <button type="submit" class="btn btn-primary">Submit Feedback</button>
     </form>
 </div>

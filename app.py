@@ -43,6 +43,16 @@ class Task(db.Model):
     complete = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+
+class Feedback(db.Model):
+    __tablename__ = 'feedback'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)  # Optional: Link feedback to a user
+    feedback_text = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -50,8 +60,9 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_email(self, email):
-        if User.query.filter_by(email=email.data).first():
-            raise ValidationError('Email already in use.')
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('This email is already registered. Please use a different one.')
 
 
 class LoginForm(FlaskForm):
@@ -74,12 +85,23 @@ def home():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
+        # Hash the password for security
         hashed_password = generate_password_hash(form.password.data, method='pbkdf2:sha256')
+        
+        # Create a new user instance
         new_user = User(email=form.email.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('Account created successfully!', 'success')
-        return redirect(url_for('login'))
+        
+        # Add the user to the database
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Account created successfully! You can now log in.', 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred while creating your account. Please try again.', 'danger')
+            print(f"Error: {e}")
+    
     return render_template('register.html', form=form)
 
 
@@ -189,6 +211,22 @@ def edit_task(task_id):
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    feedback_text = request.form.get('feedback')
+    if feedback_text:
+        feedback_entry = Feedback(
+            feedback_text=feedback_text,
+            user_id=current_user.id if current_user.is_authenticated else None
+        )
+        db.session.add(feedback_entry)
+        db.session.commit()
+        flash('Thank you for your feedback!', 'success')
+    else:
+        flash('Feedback cannot be empty.', 'danger')
+    return redirect(url_for('register'))
 
 
 @app.errorhandler(404)
