@@ -398,3 +398,34 @@ h1, h2, h3 {
         padding: 8px 16px;
     }
 }
+
+/* General link styling */
+a {
+    text-decoration: none; /* Remove underline */
+    color: inherit; /* Inherit the text color from the parent element */
+    font-weight: bold; /* Make the links stand out */
+    transition: color 0.3s ease, transform 0.2s ease; /* Add smooth hover effects */
+}
+
+/* Hover effect for links */
+a:hover {
+    color: #007bff; /* Change color on hover */
+    transform: scale(1.05); /* Slightly enlarge the link on hover */
+}
+
+/* Specific styling for contact links */
+.contact-section a, footer a {
+    color: #28a745; /* Green color for contact links */
+    font-size: 1.1rem; /* Slightly larger font size */
+    padding: 5px 10px; /* Add padding for better spacing */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f8f9fa; /* Light background for contrast */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a button-like appearance */
+    display: inline-block; /* Ensure proper spacing */
+}
+
+.contact-section a:hover, footer a:hover {
+    background-color: #e9ecef; /* Slightly darker background on hover */
+    color: #007bff; /* Change text color on hover */
+    text-decoration: none; /* Ensure underline doesn't appear on hover */
+}
