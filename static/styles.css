@@ -92,13 +92,14 @@ li {
 
 /* Form styling */
 form {
-    margin-top: 20px;
+    max-width: 400px; /* Limit the form width */
+    margin: 0 auto; /* Center the form horizontally */
 }
 
 form input,
 form textarea,
 form select {
-    width: 100%;
+    width: 100%; /* Make inputs take the full width of the form */
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -116,17 +117,18 @@ form select:focus {
 }
 
 form button[type="submit"] {
-    background-color: #28a745;
-    color: #fff;
-    border-radius: 5px;
+    width: 100%; /* Make the submit button match the input width */
+    padding: 10px;
     font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
     cursor: pointer;
 }
 
 form button[type="submit"]:hover {
-    background-color: #218838;
-    transform: scale(1.05);
+    background-color: #0056b3;
 }
 
 /* Header styling */
@@ -202,6 +204,182 @@ h1, h2, h3 {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* About Page Styling */
+.about-section, .features-section, .developer-section, .contact-section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-section h2, .features-section h2, .developer-section h2, .contact-section h2 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.about-section p, .developer-section p, .contact-section p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #555;
+}
+
+.features-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.features-section ul li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.contact-section a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.contact-section a:hover {
+    text-decoration: underline;
+}
+
+/* Jumbotron Styling */
+.jumbotron {
+    background-color: #007bff;
+    color: #fff;
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.jumbotron h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.jumbotron p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.jumbotron .btn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+}
+
+/* Features Section */
+.features-section {
+    background-color: #f8f9fa;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.features-section h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.features-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.features-section ul li {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* About Section */
+.about-section {
+    background-color: #fff;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-section h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+/* Call-to-Action Section */
+.cta-section {
+    background-color: #28a745;
+    color: #fff;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.cta-section .btn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    margin: 5px;
+}
+
+/* 404 Page Styling */
+.container.text-center {
+    background-color: #fff;
+    padding: 30px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container.text-center h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #dc3545; /* Red for error */
+}
+
+.container.text-center p {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.container.text-center ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.container.text-center ul li {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.container.text-center ul li a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container.text-center ul li a:hover {
+    text-decoration: underline;
+}
+
+.container.text-center .btn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
 }
 
 /* Responsive Design */

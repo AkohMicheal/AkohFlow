@@ -2,64 +2,34 @@
 
 {% block content %}
     <div class="container mt-4">
-        <h1 class="mb-4">Tasks</h1>
-
-        <!-- Add Task Form -->
-        <form method="POST" action="{{ url_for('add_task') }}">
-            <div class="mb-3">
-                <label for="title">Task Title</label>
-                <input type="text" id="title" name="title" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="description">Task Description</label>
-                <textarea id="description" name="description" class="form-control"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Task</button>
-        </form>
-
-        <!-- Search and Filter Form -->
-        <form class="form-inline mb-4" method="get" action="{{ url_for('tasks') }}">
-            <input type="text" name="search" class="form-control mr-2" placeholder="Search" value="{{ search_query }}">
-            <label for="status-select" class="sr-only">Filter by Status</label>
-            <select id="status-select" name="status" class="form-control mr-2" title="Filter by Status">
-                <option value="">All</option>
-                <option value="complete" {% if filter_status == 'complete' %}selected{% endif %}>Complete</option>
-                <option value="incomplete" {% if filter_status == 'incomplete' %}selected{% endif %}>Incomplete</option>
-            </label>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-
-        <!-- Task List -->
+        <h2>Task List</h2>
         <ul class="list-group">
-            {% for task in pagination.items %}
-                <li class="list-group-item d-flex justify-content-between align-items-center" id="task-{{ task.id }}">
-                    <div>
-                        <strong>{{ task.title }}</strong><br>
-                        {{ task.description }}
-                    </div>
-                    <div>
-                        <label>
-                            <input type="checkbox" {% if task.complete %}checked{% endif %} onclick="toggleTask('{{ task.id }}')" title="Mark as Complete">
-                            Mark as Complete
-                        </label>
-                        <span>Status: {% if task.complete %}Complete{% else %}Incomplete{% endif %}</span>
-                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
-                        <form action="{{ url_for('edit_task', task_id=task.id) }}" method="GET" style="display:inline;">
-                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                        </form>
-                    </div>
-                </li>
-            {% endfor %}
+            {% if tasks %}
+                {% for task in tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ task.title }}</strong><br>
+                            <span>{{ task.description }}</span>
+                        </div>
+                        <div>
+                            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            <form action="{{ url_for('edit_task', task_id=task.id) }}" method="GET" style="display:inline;">
+                                <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item text-center">No tasks available. Add a new task to get started!</li>
+            {% endif %}
         </ul>
-
-        <!-- Pagination Controls -->
         <nav aria-label="Page navigation" class="mt-4">
             <ul class="pagination justify-content-center">
                 {% if pagination.has_prev %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('tasks', page=pagination.prev_num, search=search_query, status=filter_status) }}">Previous</a>
+                        <a class="page-link" href="{{ url_for('tasks', page=pagination.prev_num) }}">Previous</a>
                     </li>
                 {% endif %}
                 <li class="page-item disabled">
@@ -67,22 +37,10 @@
                 </li>
                 {% if pagination.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for('tasks', page=pagination.next_num, search=search_query, status=filter_status) }}">Next</a>
+                        <a class="page-link" href="{{ url_for('tasks', page=pagination.next_num) }}">Next</a>
                     </li>
                 {% endif %}
             </ul>
         </nav>
     </div>
-
-    <!-- JavaScript for toggling task completion -->
-    <script>
-        function toggleTask(taskId) {
-            fetch(`/toggle_task/${taskId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    const taskStatus = data.completed ? 'Complete' : 'Incomplete';
-                    document.querySelector(`#task-${taskId} span`).textContent = `Status: ${taskStatus}`;
-                });
-        }
-    </script>
 {% endblock %}

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Task</h2>
+    <form method="POST" action="{{ url_for('add_task') }}">
+        <div class="mb-3">
+            <label for="title">Task Title</label>
+            <input type="text" id="title" name="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="description">Task Description</label>
+            <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+</div>
+{% endblock %}

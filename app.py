@@ -133,38 +133,29 @@ def logout():
 def tasks():
     page = request.args.get('page', 1, type=int)
     per_page = 5
-    search_query = request.args.get('search', '', type=str)
-    filter_status = request.args.get('status', '', type=str)
-
     query = Task.query.filter_by(user_id=current_user.id)
-
-    if search_query:
-        query = query.filter(or_(Task.title.contains(search_query), Task.description.contains(search_query)))
-
-    if filter_status == "complete":
-        query = query.filter_by(complete=True)
-    elif filter_status == "incomplete":
-        query = query.filter_by(complete=False)
-
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-    return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query, filter_status=filter_status)
+    return render_template('tasks.html', tasks=pagination.items, pagination=pagination)
 
 
-@app.route('/add_task', methods=['POST'])
+@app.route('/add_task', methods=['GET', 'POST'])
 @login_required
 def add_task():
-    title = request.form.get('title')
-    description = request.form.get('description')
+    if request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
 
-    if not title:
-        flash('Task title is required!', 'danger')
+        if not title:
+            flash('Task title is required!', 'danger')
+            return redirect(url_for('add_task'))
+
+        new_task = Task(title=title, description=description, user_id=current_user.id)
+        db.session.add(new_task)
+        db.session.commit()
+        flash('Task added successfully!', 'success')
         return redirect(url_for('tasks'))
 
-    new_task = Task(title=title, description=description, user_id=current_user.id)
-    db.session.add(new_task)
-    db.session.commit()
-    flash('Task added successfully!', 'success')
-    return redirect(url_for('tasks'))
+    return render_template('add_task.html')
 
 
 @app.route('/toggle_task/<int:task_id>', methods=['POST'])
