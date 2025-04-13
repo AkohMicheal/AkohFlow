@@ -27,6 +27,9 @@ print("App's secret_key:", app.secret_key)
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -101,11 +104,22 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+        print("Form validated successfully")  # Debugging
         user = User.query.filter_by(email=form.email.data).first()
-        if user and check_password_hash(user.password, form.password.data):
-            login_user(user)
-            return redirect(url_for('tasks'))
+        if user:
+            print("User found:", user.email)  # Debugging
+            if check_password_hash(user.password, form.password.data):
+                print("Password matched")  # Debugging
+                login_user(user)
+                print("User logged in:", user.email)  # Debugging
+                return redirect(url_for('tasks'))  # Correct route name
+            else:
+                print("Password did not match")  # Debugging
+        else:
+            print("User not found")  # Debugging
         flash('Login Unsuccessful. Please check email and password', 'danger')
+    else:
+        print("Form validation failed")  # Debugging
     return render_template('login.html', form=form)
 
 @app.route('/logout')
@@ -117,6 +131,8 @@ def logout():
 @app.route('/tasks')
 @login_required
 def tasks():
+    print("Current user:", current_user)  # Debugging: Check logged-in user
+    print("Is user authenticated?", current_user.is_authenticated)  # Debugging
     page = request.args.get('page', 1, type=int)
     per_page = 5
     query = Task.query.filter_by(user_id=current_user.id)
