@@ -12,13 +12,15 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-class Config:
-    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI", "postgresql://<username>:<password>@<host>:<port>/<database>")
-    SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
 app = Flask(__name__)
-app.config.from_object(Config)
+if os.getenv("FLASK_ENV") == "development":
+    app.config['DEBUG'] = True
+else:
+    app.config['DEBUG'] = False
+
+# Use DATABASE_URL from .env
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -193,5 +195,5 @@ def not_found_error(error):
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5432))
     app.run(host='0.0.0.0', port=port)
