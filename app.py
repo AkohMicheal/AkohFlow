@@ -12,13 +12,19 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
-if os.getenv("FLASK_ENV") == "development":
-    app.config['DEBUG'] = True
-else:
-    app.config['DEBUG'] = False
+# Debugging: Check if SECRET_KEY is loaded
+print("Loaded SECRET_KEY:", os.getenv("SECRET_KEY"))
 
-# Use DATABASE_URL from .env
+app = Flask(__name__)
+
+# Set a secret key for session management
+app.secret_key = os.getenv("SECRET_KEY", "your_default_secret_key")
+
+# Debugging: Print secret keys
+print("SECRET_KEY from .env:", os.getenv("SECRET_KEY"))
+print("App's secret_key:", app.secret_key)
+
+# Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -28,7 +34,7 @@ login_manager.login_view = "login"
 migrate = Migrate(app, db)
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'user'
+    __tablename__ = 'user'  # Change table name to 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -195,5 +201,5 @@ def not_found_error(error):
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5432))
+    port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set
     app.run(host='0.0.0.0', port=port)
