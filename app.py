@@ -27,6 +27,8 @@ print("App's secret_key:", app.secret_key)
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -104,7 +106,8 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('tasks'))
+            print("User logged in:", user.email)  # Debugging: Check logged-in user
+            return redirect(url_for('task'))
         flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', form=form)
 
@@ -117,6 +120,7 @@ def logout():
 @app.route('/tasks')
 @login_required
 def tasks():
+    print("Current user:", current_user)  # Debugging: Check logged-in user
     page = request.args.get('page', 1, type=int)
     per_page = 5
     query = Task.query.filter_by(user_id=current_user.id)
