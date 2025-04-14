@@ -12,19 +12,10 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Debugging: Check if SECRET_KEY is loaded
-print("Loaded SECRET_KEY:", os.getenv("SECRET_KEY"))
-
 app = Flask(__name__)
 
-# Set a secret key for session management
+# App configuration
 app.secret_key = os.getenv("SECRET_KEY", "your_default_secret_key")
-
-# Debugging: Print secret keys
-print("SECRET_KEY from .env:", os.getenv("SECRET_KEY"))
-print("App's secret_key:", app.secret_key)
-
-# Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SESSION_COOKIE_SECURE'] = True
@@ -35,16 +26,15 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login"
 migrate = Migrate(app, db)
 
+# Models
 class User(db.Model, UserMixin):
-    __tablename__ = 'user'  # Change table name to 'users'
-
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
 
 class Task(db.Model):
     __tablename__ = 'task'
-
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200))
@@ -53,12 +43,12 @@ class Task(db.Model):
 
 class Feedback(db.Model):
     __tablename__ = 'feedback'
-
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     feedback_text = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
 
+# Forms
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -79,6 +69,7 @@ class LoginForm(FlaskForm):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Routes
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -94,7 +85,7 @@ def register():
             db.session.commit()
             flash('Account created successfully! You can now log in.', 'success')
             return redirect(url_for('login'))
-        except Exception as e:
+        except Exception:
             db.session.rollback()
             flash('An error occurred while creating your account. Please try again.', 'danger')
     return render_template('register.html', form=form)
@@ -103,15 +94,11 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print("Form validated successfully")  # Debugging
         user = User.query.filter_by(email=form.email.data).first()
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
-            print("User logged in:", user.email)  # Debugging: Check logged-in user
             return redirect(url_for('tasks'))
         flash('Login Unsuccessful. Please check email and password', 'danger')
-    else:
-        print("Form validation failed")  # Debugging
     return render_template('login.html', form=form)
 
 @app.route('/logout')
@@ -123,12 +110,16 @@ def logout():
 @app.route('/tasks')
 @login_required
 def tasks():
-    print("Current user:", current_user)  # Debugging: Check logged-in user
     page = request.args.get('page', 1, type=int)
     per_page = 5
+    search_query = request.args.get('q', '').strip()
+
     query = Task.query.filter_by(user_id=current_user.id)
+    if search_query:
+        query = query.filter(Task.title.ilike(f'%{search_query}%'))
+
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-    return render_template('tasks.html', tasks=pagination.items, pagination=pagination)
+    return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query)
 
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required
@@ -205,21 +196,8 @@ def feedback():
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('404.html'), 404
-
-@app.errorhandler(404)
-def page_not_found(e):
-    # Render the layout.html template and include JavaScript to trigger the modal
-    response = render_template('layout.html') + """
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var errorModal = new bootstrap.Modal(document.getElementById('error404Modal'));
-            errorModal.show();
-        });
-    </script>
-    """
-    return response, 404
+    return render_template('layout.html', error_404=True), 404
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

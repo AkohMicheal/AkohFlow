@@ -33,9 +33,11 @@
 
 <div class="frame features-section mt-5">
     <h4 class="text-center">What do you think about the app</h4>
-    <form method="POST" action="{{ url_for('feedback') }}">
-        <textarea name="feedback" class="form-control mb-2" rows="3" placeholder="Tell us about your experience..."></textarea>
-        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-    </form>
+    <div class="text-center">
+        <form method="POST" action="{{ url_for('feedback') }}" class="d-inline-block">
+            <textarea name="feedback" class="form-control mb-2" rows="3" placeholder="Tell us about your experience..."></textarea>
+            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

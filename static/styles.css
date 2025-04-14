@@ -11,7 +11,7 @@
 /* Features Grid Styling */
 .features-grid {
     display: grid; /* Use CSS Grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
     gap: 20px; /* Space between grid items */
     list-style: none; /* Remove bullet points */
     padding: 0; /* Remove default padding */
@@ -105,14 +105,14 @@
 
 /* Navbar Styling */
 .navbar {
-    background-color: #007bff; /* Blue background */
+    background-color: #007bff !important; /* Override Bootstrap default navbar background */
 }
 
 .navbar .navbar-brand,
 .navbar .nav-link,
 .navbar .form-control,
 .navbar .btn-outline-success {
-    color: white !important; /* White text for visibility */
+    color: white !important; /* Ensure text is visible on blue background */
 }
 
 .navbar .nav-link:hover {
@@ -121,7 +121,7 @@
 
 /* Sign Up Button Styling */
 .navbar .btn-success {
-    background-color: white !important; /* White background */
+    background-color: white !important; /* Override Bootstrap default button background */
     color: #007bff !important; /* Blue text */
     border: 1px solid #007bff; /* Blue border */
 }
@@ -133,4 +133,14 @@
 
 .btn btn-primary {
     text-align: center; /* Center text in button */
+}
+
+body {
+    font-family: Arial, sans-serif; /* Use a clean sans-serif font */
+    background-color: #f4f4f4; /* Light gray background for the body */
+    color: #333; /* Dark text color for contrast */
+    line-height: 1.6; /* Increase line height for readability */
+    margin-left: 20px; /* Space on the left side */
+    margin-right: 20px; /* Space on the right side */
+    padding: auto;
 }

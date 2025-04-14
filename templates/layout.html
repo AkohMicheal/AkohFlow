@@ -4,23 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AkohFlow</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1HIQ6k0nLIp3WlZ5qDQ4z5w5zX5q5pLT5tJ5q5p5z5z" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldf4Jo+2mJbHaEWldf4Jo+2mJbHaEWldf4Jo+2mJbHaEWldf4Jo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" href="{{ url_for('static', filename='bootstrap.bundle.min') }}"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Brand Logo or Title -->
-            <a class="navbar-brand" href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="AkohFlow Logo" width="30" height="30" class="d-inline-block align-text-top">
-                AkohFlow
+            <a class="navbar-brand">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AkohFlow" width="30" height="30" class="d-inline-block align-text-top">
             </a>
 
             <!-- Navbar Toggler for Mobile View -->
@@ -47,10 +48,12 @@
                 </ul>
 
                 <!-- Search Bar -->
-                <form class="d-flex me-3">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                {% if current_user.is_authenticated and request.endpoint == 'tasks' %}
+                <form class="d-flex me-3" method="GET" action="{{ url_for('tasks') }}">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search tasks" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+                {% endif %}
 
                 <!-- Right-Side Menus -->
                 <ul class="navbar-nav">
@@ -77,7 +80,7 @@
         {% endblock %}
     </div>
 
-    <!-- Modals and Footer -->
+    <!-- Modals -->
     <!-- Add Task Modal -->
     <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -129,5 +132,17 @@
             </div>
         </div>
     </div>
+<!-- Footer -->
+    <footer class="bg-light text-center text-lg-start mt-4">
+        <div class="text-center p-3">
+            <ul>
+                <li><a href="https://www.linkedin.com/in/micheal-akoh">LINKEDLN</a></li>
+                <li><a href="https://www.instagram.com/akohtech/">INSTAGRAM</a></li>
+                <li><a href="https://discordapp.com/users/akohmicheal">DISCORD</a></li>
+                <li><a href="https://github.com/AkohMicheal">GITHUB</a></li>
+            </ul>
+           <p> &copy; 2025 AkohTech Labs. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
