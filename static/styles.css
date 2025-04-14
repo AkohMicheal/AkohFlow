@@ -155,7 +155,7 @@ body {
   /* Override Bootstrap link styles for footer */
   .footer-link {
     text-decoration: none !important; /* removes underline */
-    color: #ffffff !important; /* white or choose your color */
+    color: #1b50ef00 !important; /* white or choose your color */
   }
 
   /* Optional: add hover effect */
