@@ -195,8 +195,8 @@ def feedback():
     return redirect(url_for('register'))
 
 @app.errorhandler(404)
-def not_found_error(error):
-    return render_template('layout.html', error_404=True), 404
+def page_not_found(e):
+    return render_template('404.html', show_modal=True), 404
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
