@@ -145,19 +145,21 @@ body {
     padding: auto;
 }
 
-footer {
-    background-color: #f8f9fa; /* Light gray background for footer */
-    border-top: 1px solid #ddd; /* Light border on top of the footer */
-    padding: 20px 0; /* Space above and below the footer */
-    text-align: center; /* Center the footer content */
-    position: relative; /* Position relative for absolute positioning of child elements */
-    bottom: 0; /* Stick to the bottom of the page */
-    width: 100%; /* Full width of the page */
-}
+/* Remove bullets from the list */
+.no-dots {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+/* Footer Styling */
+  /* Override Bootstrap link styles for footer */
+  .footer-link {
+    text-decoration: none !important; /* removes underline */
+    color: #ffffff !important; /* white or choose your color */
+  }
 
-footer .text {
-    color: #555; /* Subtle text color for footer */
-    font-size: 12px; /* Smaller font size for footer text */
-    text-align: center; /* Center the footer text */
-    padding: 20px 0; /* Space above and below the footer text */
-}
+  /* Optional: add hover effect */
+  .footer-link:hover {
+    text-decoration: underline;
+    color: #ccc !important; /* slightly lighter on hover */
+  }
