@@ -8,3 +8,4 @@ document.querySelectorAll('form[action*="delete_task"]').forEach(form => {
         }
     });
 });
+

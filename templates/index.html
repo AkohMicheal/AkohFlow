@@ -1,27 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="jumbotron text-center mt-4">
-    <h1 class="display-4">Welcome to TaskMaster!</h1>
-    <p class="lead">Your ultimate task management app to help you stay organized, productive, and on track.</p>
-    <hr class="my-4">
-    <p>Effortlessly manage your tasks with features like search, filter, and real-time updates. Join us today and start achieving more with less effort!</p>
+
+<div class="frame jumbotron text-center mt-4">
+    <h1 class="display-4">Your Simple, Modern, and Efficient Solution for Staying Organized</h1>
+    <p class="lead">Your ultimate task management app to help you stay organized, productive, and on track. Effortlessly manage your tasks with features like search, filter, and real-time updates in one place. Join us today and start achieving more with less effort!</p>
     <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started</a>
 </div>
 
-<div class="features-section mt-5">
-    <h2 class="text-center">Features</h2>
-    <ul class="list-unstyled text-center mt-3">
-        <li>✔️ Create, edit, and delete tasks</li>
-        <li>✔️ Search and filter tasks</li>
-        <li>✔️ Mark tasks as complete or incomplete</li>
-        <li>✔️ User authentication and session management</li>
-        <li>✔️ Responsive design for all devices</li>
-    </ul>
-</div>
-
-<div class="about-section mt-5">
-    <h2 class="text-center">Why Choose TaskMaster?</h2>
+<div class="frame about-section mt-5">
+    <h2 class="text-center">Why Choose AkohFlow?</h2>
     <p class="text-center mt-3">
         TaskMaster is designed to be user-friendly and efficient. Whether you're a student, professional, or anyone in between, our app will help you manage your tasks effectively. 
         With a clean interface and powerful features, TaskMaster is your go-to solution for staying organized.
@@ -31,10 +19,23 @@
     </p>
 </div>
 
-<div class="cta-section text-center mt-5">
-    <h2>Ready to Get Started?</h2>
-    <p class="mt-3">Sign up now and experience the simplicity and power of TaskMaster.</p>
-    <a class="btn btn-success btn-lg" href="{{ url_for('register') }}" role="button">Register</a>
-    <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Login</a>
+<div class="frame features-section mt-5">
+    <h2 class="text-center">Features</h2>
+    <ul class="features-grid text-center mt-3">
+        <li>✔️ Create, edit, and delete tasks</li>
+        <li>✔️ Search and filter tasks</li>
+        <li>✔️ Mark tasks as complete or incomplete</li>
+        <li>✔️ User authentication and session management</li>
+        <li>✔️ Responsive design for all devices</li>
+        <li>✔️ Fast and Easy to use on any devices</li>
+    </ul>
+</div>
+
+<div class="frame features-section mt-5">
+    <h4 class="text-center">What do you think about the app</h4>
+    <form method="POST" action="{{ url_for('feedback') }}">
+        <textarea name="feedback" class="form-control mb-2" rows="3" placeholder="Tell us about your experience..."></textarea>
+        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+    </form>
 </div>
 {% endblock %}
