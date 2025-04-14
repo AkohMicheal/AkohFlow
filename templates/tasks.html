@@ -8,22 +8,19 @@
     {% endif %}
 
     {% if tasks %}
-        <div class="task-grid">
-            {% for task in tasks %}
-                <div class="task-card">
-                    <h5>{{ task.title }}</h5>
-                    <p>{{ task.description }}</p>
-                    <form method="POST" action="{{ url_for('toggle_task', task_id=task.id) }}">
-                        <button type="submit" class="btn btn-sm {{ 'btn-success' if task.complete else 'btn-secondary' }}">
-                            {{ 'Complete' if not task.complete else 'Incomplete' }}
-                        </button>
-                    </form>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>No tasks found.</p>
-    {% endif %}
+    <div class="task-grid">
+        {% for task in tasks %}
+            <div class="task-card">
+                <h5>{{ task.title }}</h5>
+                <p>{{ task.description }}</p>
+            <button 
+                class="btn btn-sm {{ 'btn-success' if task.complete else 'btn-secondary' }} toggle-task-btn" 
+                data-task-id="{{ task.id }}">
+                {{ 'Incomplete' if task.complete else 'Complete' }}
+            </button>
+        {% endfor %}
+    </div>
+{% endif %}
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
             {% if pagination.has_prev %}
@@ -43,14 +40,35 @@
     </nav>
 </div>
 <script>
-    function toggle_task(task_id) {
-        const taskButton = document.querySelector(`button[data-task-id="${task_id}"]`);
-        if (taskButton) {
-            taskButton.classList.toggle('btn-success');
-            taskButton.classList.toggle('btn-secondary');
-            taskButton.textContent = taskButton.classList.contains('btn-success') ? 'Complete' : 'Incomplete';
-        }
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.toggle-task-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const task_id = this.getAttribute('data-task-id');
+
+                fetch(`/toggle_task/${task_id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token() }}'  // If you're using CSRF
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.completed) {
+                        this.classList.remove('btn-secondary');
+                        this.classList.add('btn-success');
+                        this.textContent = 'Incomplete';
+                    } else {
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-secondary');
+                        this.textContent = 'Complete';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
     function searchTasks() {
         const searchQuery = document.getElementById('search-input').value;
         window.location.href = `{{ url_for('tasks') }}?search=${searchQuery}`;
