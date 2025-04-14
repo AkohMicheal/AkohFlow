@@ -144,3 +144,20 @@ body {
     margin-right: 20px; /* Space on the right side */
     padding: auto;
 }
+
+footer {
+    background-color: #f8f9fa; /* Light gray background for footer */
+    border-top: 1px solid #ddd; /* Light border on top of the footer */
+    padding: 20px 0; /* Space above and below the footer */
+    text-align: center; /* Center the footer content */
+    position: relative; /* Position relative for absolute positioning of child elements */
+    bottom: 0; /* Stick to the bottom of the page */
+    width: 100%; /* Full width of the page */
+}
+
+footer .text {
+    color: #555; /* Subtle text color for footer */
+    font-size: 12px; /* Smaller font size for footer text */
+    text-align: center; /* Center the footer text */
+    padding: 20px 0; /* Space above and below the footer text */
+}
