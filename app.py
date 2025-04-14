@@ -108,7 +108,7 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             login_user(user)
             print("User logged in:", user.email)  # Debugging: Check logged-in user
-            return redirect(url_for('task'))
+            return redirect(url_for('tasks'))
         flash('Login Unsuccessful. Please check email and password', 'danger')
     else:
         print("Form validation failed")  # Debugging
@@ -206,6 +206,19 @@ def feedback():
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # Render the layout.html template and include JavaScript to trigger the modal
+    response = render_template('layout.html') + """
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var errorModal = new bootstrap.Modal(document.getElementById('error404Modal'));
+            errorModal.show();
+        });
+    </script>
+    """
+    return response, 404
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # Default to 5000 if PORT is not set

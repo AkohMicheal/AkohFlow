@@ -6,35 +6,127 @@
     <title>AkohFlow</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="{{ url_for('static', filename='static/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
 </head>
-<body>
-    <div class="app-container">
-        <!-- Navbar -->
-        <nav class="navbar">
-            <ul class="navbar-menu">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('tasks') }}">Tasks</a></li>
-                <li><a href="{{ url_for('add_task') }}">Add Task</a></li>
-                <li><a href="{{ url_for('about') }}">About</a></li>
-            </ul>
-        </nav>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            {% block content %}
-            {% endblock %}
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Brand Logo or Title -->
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="AkohFlow Logo" width="30" height="30" class="d-inline-block align-text-top">
+                AkohFlow
+            </a>
+
+            <!-- Navbar Toggler for Mobile View -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Content -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Left-Side Menus -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('tasks') }}">Tasks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addTaskModal">Add Task</a>
+                    </li>
+                </ul>
+
+                <!-- Search Bar -->
+                <form class="d-flex me-3">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+                <!-- Right-Side Menus -->
+                <ul class="navbar-nav">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="btn btn-secondary btn-sm" href="{{ url_for('logout') }}" role="button">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-success btn-sm" href="{{ url_for('register') }}" role="button">Sign Up</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Modals and Footer -->
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+    <!-- Add Task form here -->
+                    <form method="POST" action="{{ url_for('add_task') }}">
+                        <div class="mb-3">
+                            <label for="title">Task Title</label>
+                            <input type="text" id="title" name="title" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description">Task Description</label>
+                            <textarea id="description" name="description" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center mt-4">
-        <p>&copy; 2025 AkohTech Labs. All rights reserved.</p>
-        <p>
-            📬 Contact: <a href="mailto:akohtech@gmail.com">akohtech@gmail.com</a> |
-            🌐 <a href="https://www.linkedin.com/in/micheal-akoh" target="_blank" rel="noopener">LinkedIn</a> |
-            🐦 <a href="https://twitter.com/AkohMicheal" target="_blank" rel="noopener">Twitter</a> |
-            📸 <a href="https://www.instagram.com/akohtech" target="_blank" rel="noopener">Instagram</a>
-        </p>
-    </footer>
+    <!-- 404 Modal -->
+    <div class="modal fade" id="error404Modal" tabindex="-1" aria-labelledby="error404ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="error404ModalLabel">404 - Page Not Found</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="lead">
+                        Oops! It seems like the page you're looking for doesn't exist or has been moved.
+                    </p>
+                    <hr class="my-4">
+                    <p>
+                        Here are some options to help you get back on track:
+                    </p>
+                    <ul class="list-unstyled mt-3">
+                        <li>🏠 <a href="{{ url_for('home') }}">Return to the Home</a></li>
+                        <li>📬 <a href="mailto:akohtech@gmail.com">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
