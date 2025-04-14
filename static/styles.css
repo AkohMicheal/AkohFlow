@@ -176,3 +176,35 @@ body {
     text-decoration: underline;
     color: #333 !important;
   }
+
+/* Style the feedback form for better layout */
+.feedback-form {
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: 0 auto;
+  }
+
+  /* Style the textarea without removing Bootstrap functionality */
+  .custom-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    background-color: #fff;
+    color: #333;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  /* Focus style */
+  .custom-textarea:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
+  }

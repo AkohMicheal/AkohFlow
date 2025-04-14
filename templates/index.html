@@ -34,10 +34,11 @@
 <div class="frame features-section mt-5">
     <h4 class="text-center">What do you think about the app</h4>
     <div class="text-center">
-        <form method="POST" action="{{ url_for('feedback') }}" class="d-inline-block">
-            <textarea name="feedback" class="custom-textarea" rows="4" placeholder="Tell us about your experience..."></textarea>
-            <button type="submit" class="btn btn-primary">Submit Feedback</button>
-        </form>
+      <form method="POST" action="{{ url_for('feedback') }}" class="d-inline-block feedback-form">
+        <textarea name="feedback" class="custom-textarea" rows="4" placeholder="Tell us about your experience..."></textarea>
+        <button type="submit" class="btn btn-primary mt-2">Submit Feedback</button>
+      </form>
     </div>
-</div>
+  </div>
+  
 {% endblock %}
