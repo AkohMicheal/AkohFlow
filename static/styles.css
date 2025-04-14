@@ -130,3 +130,7 @@
     background-color: #007bff !important; /* Blue background on hover */
     color: white !important; /* White text on hover */
 }
+
+.btn btn-primary {
+    text-align: center; /* Center text in button */
+}
