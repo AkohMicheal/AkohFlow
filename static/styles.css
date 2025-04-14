@@ -145,21 +145,34 @@ body {
     padding: auto;
 }
 
-/* Remove bullets from the list */
-.no-dots {
+/* Center everything in the footer */
+.footer {
+    background-color: #f5f5f5; /* light gray or your preferred bg */
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  /* Remove list bullets and spacing */
+  .footer-links {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
-/* Footer Styling */
-  /* Override Bootstrap link styles for footer */
-  .footer-link {
-    text-decoration: none !important; /* removes underline */
-    color: #1b50ef00 !important; /* white or choose your color */
+
+  /* Optional: stack items vertically with space */
+  .footer-links li {
+    margin: 5px 0;
   }
 
-  /* Optional: add hover effect */
+  /* Style footer links */
+  .footer-link {
+    text-decoration: none !important;  /* remove underline */
+    color: black !important;           /* make text black */
+    font-weight: 500;
+  }
+
+  /* Hover effect */
   .footer-link:hover {
     text-decoration: underline;
-    color: #ccc !important; /* slightly lighter on hover */
+    color: #333 !important;
   }
