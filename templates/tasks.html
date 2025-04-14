@@ -42,4 +42,18 @@
         </ul>
     </nav>
 </div>
+<script>
+    function toggle_task(task_id) {
+        const taskButton = document.querySelector(`button[data-task-id="${task_id}"]`);
+        if (taskButton) {
+            taskButton.classList.toggle('btn-success');
+            taskButton.classList.toggle('btn-secondary');
+            taskButton.textContent = taskButton.classList.contains('btn-success') ? 'Complete' : 'Incomplete';
+        }
+    }
+    function searchTasks() {
+        const searchQuery = document.getElementById('search-input').value;
+        window.location.href = `{{ url_for('tasks') }}?search=${searchQuery}`;
+    }
+</script>
 {% endblock %}
