@@ -13,9 +13,7 @@
             <div class="task-card">
                 <h5>{{ task.title }}</h5>
                 <p>{{ task.description }}</p>
-            <button 
-                class="btn btn-sm {{ 'btn-success' if task.complete else 'btn-secondary' }} toggle-task-btn" 
-                data-task-id="{{ task.id }}">
+            <button class="btn btn-sm {{ 'btn-success' if task.complete else 'btn-secondary' }} toggle-task-btn" data-task-id="{{ task.id }}">
                 {{ 'Incomplete' if task.complete else 'Complete' }}
             </button>
         {% endfor %}
