@@ -107,16 +107,18 @@
     </div>
 
 <!-- Footer -->
+{% if request.endpoint not in ['login', 'edit_task', 'register'] %}
 <footer class="footer">
     <div class="footer-content">
-      <ul class="footer-links">
-        <li><a class="footer-link" href="https://www.linkedin.com/in/micheal-akoh">LINKEDIN</a></li>
-        <li><a class="footer-link" href="https://www.instagram.com/akohtech/">INSTAGRAM</a></li>
-        <li><a class="footer-link" href="https://discordapp.com/users/akohmicheal">DISCORD</a></li>
-        <li><a class="footer-link" href="https://github.com/AkohMicheal">GITHUB</a></li>
-      </ul>
-      <p>&copy; 2025 AkohTech Labs. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a class="footer-link" href="https://www.linkedin.com/in/micheal-akoh">LINKEDIN</a></li>
+            <li><a class="footer-link" href="https://www.instagram.com/akohtech/">INSTAGRAM</a></li>
+            <li><a class="footer-link" href="https://discordapp.com/users/akohmicheal">DISCORD</a></li>
+            <li><a class="footer-link" href="https://github.com/AkohMicheal">GITHUB</a></li>
+        </ul>
+        <p>&copy; 2025 AkohTech Labs. All rights reserved.</p>
     </div>
-  </footer>
+</footer>
+{% endif %}
 </body>
 </html>
