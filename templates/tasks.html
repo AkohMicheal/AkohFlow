@@ -48,7 +48,8 @@
                 fetch(`/toggle_task/${task_id}`, {
                     method: 'POST',
                     headers: {
-                       'Content-Type': 'application/json' // If you're using CSRF then add 'X-CSRFToken': '{{     csrf_token() }}'
+                       'Content-Type': 'application/json',
+                       'X-CSRFToken': csrfToken
                     },
                 })
                 .then(response => response.json())

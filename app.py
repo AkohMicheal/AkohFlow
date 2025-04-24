@@ -8,11 +8,16 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from flask_migrate import Migrate
 import os
 from dotenv import load_dotenv
+from flask_wtf.csrf import CSRFProtect
+
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
+
+# Initialize Flask app and CSRF protection
+csrf = CSRFProtect(app)
 
 # App configuration
 app.secret_key = os.getenv("SECRET_KEY", "your_default_secret_key")
