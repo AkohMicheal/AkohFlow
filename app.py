@@ -214,6 +214,8 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 
 
+from flask_wtf.csrf import generate_csrf
+
 @app.context_processor
 def inject_csrf_token():
     return dict(csrf_token=generate_csrf())
