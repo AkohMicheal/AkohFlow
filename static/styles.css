@@ -145,6 +145,12 @@ body {
     padding: auto;
 }
 
+/* hr separator for the footer */
+.footer-separator {
+    border-top: 1px solid #ccc;
+    margin-top: 40px;
+}
+
 /* Center everything in the footer */
 .footer {
     background-color: #f5f5f5; /* light gray or your preferred bg */

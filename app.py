@@ -126,9 +126,7 @@ def tasks():
         query = query.filter(Task.title.ilike(f'%{search_query}%'))
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
-    #⬇️ Add this line to inject CSRF token manually
-    csrf_token = generate_csrf()
-    return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query, csrf_token=csrf_token)
+    return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query)
 
 
 @app.route('/add_task', methods=['GET', 'POST'])
