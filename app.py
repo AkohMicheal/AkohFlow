@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from flask_wtf.csrf import CSRFProtect
 
 
+
 # Load environment variables
 load_dotenv()
 
@@ -112,19 +113,23 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+from flask_wtf.csrf import generate_csrf
+
 @app.route('/tasks')
 @login_required
 def tasks():
     page = request.args.get('page', 1, type=int)
-    per_page = 5
+    per_page = 10
     search_query = request.args.get('q', '').strip()
-
     query = Task.query.filter_by(user_id=current_user.id)
     if search_query:
         query = query.filter(Task.title.ilike(f'%{search_query}%'))
-
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-    return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query)
+
+    #⬇️ Add this line to inject CSRF token manually
+    csrf_token = generate_csrf()
+    return render_template('tasks.html', tasks=pagination.items, pagination=pagination, search_query=search_query, csrf_token=csrf_token)
+
 
 @app.route('/add_task', methods=['GET', 'POST'])
 @login_required

@@ -10,14 +10,18 @@
     {% if tasks %}
     <div class="task-grid">
         {% for task in tasks %}
-            <div class="task-card">
-                <h5>{{ task.title }}</h5>
-                <p>{{ task.description }}</p>
-            <button class="btn btn-sm {{ 'btn-success' if task.complete else 'btn-secondary' }} toggle-task-btn" data-task-id="{{ task.id }}">
-                {{ 'Incomplete' if task.complete else 'Complete' }}
-            </button>
+          <div class="frame task-card">
+            <h5>{{ task.title }}</h5>
+            <p>{{ task.description }}</p>
+            <button 
+  class="btn toggle-task-btn {{ 'btn-success' if task.complete else 'btn-secondary' }} status-bar" 
+  data-task-id="{{ task.id }}">
+  {{ 'Incomplete' if task.complete else 'Complete' }}
+</button>
+
+          </div>
         {% endfor %}
-    </div>
+      </div>
 {% endif %}
     <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
@@ -37,6 +41,22 @@
         </ul>
     </nav>
 </div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="taskToast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage">
+          Task updated!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const csrfToken = '{{ csrf_token() }}';
+</script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.toggle-task-btn').forEach(button => {
@@ -46,22 +66,29 @@
                 fetch(`/toggle_task/${task_id}`, {
                     method: 'POST',
                     headers: {
-                       'Content-Type': 'application/json',
-                       'X-CSRFToken': csrfToken
-                    },
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken
+    },
+    body: JSON.stringify({})
                 })
+
                 .then(response => response.json())
                 .then(data => {
-                    if (data.completed) {
-                        this.classList.remove('btn-secondary');
-                        this.classList.add('btn-success');
-                        this.textContent = 'Incomplete';
-                    } else {
-                        this.classList.remove('btn-success');
-                        this.classList.add('btn-secondary');
-                        this.textContent = 'Complete';
-                    }
-                })
+    const button = this;
+
+    if (data.completed) {
+        button.classList.remove('btn-secondary');
+        button.classList.add('btn-success');
+        button.textContent = 'Incomplete';
+        showToast('Task marked as complete');
+    } else {
+        button.classList.remove('btn-success');
+        button.classList.add('btn-secondary');
+        button.textContent = 'Complete';
+        showToast('Task marked as incomplete');
+    }
+})
+
                 .catch(error => console.error('Error:', error));
             });
         });
@@ -71,8 +98,13 @@
         const searchQuery = document.getElementById('search-input').value;
         window.location.href = `{{ url_for('tasks') }}?search=${searchQuery}`;
     }
-</script>
-<script>
-    const csrfToken = '{{ csrf_token() }}';
+
+    function showToast(message) {
+    const toastMessage = document.getElementById('toastMessage');
+    toastMessage.textContent = message;
+
+    const toastElement = new bootstrap.Toast(document.getElementById('taskToast'));
+    toastElement.show();
+}
 </script>
 {% endblock %}
