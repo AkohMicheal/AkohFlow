@@ -189,6 +189,12 @@ def about():
 
 @app.route('/feedback', methods=['POST'])
 def feedback():
+    try:
+        validate_csrf(request.form.get('csrf_token'))
+    except ValidationError:
+        flash('Invalid CSRF token.', 'danger')
+        return redirect(url_for('register'))
+
     feedback_text = request.form.get('feedback')
     if feedback_text:
         feedback_entry = Feedback(
@@ -201,6 +207,10 @@ def feedback():
     else:
         flash('Feedback cannot be empty.', 'danger')
     return redirect(url_for('register'))
+
+@app.context_processor
+def inject_csrf_token():
+    return dict(csrf_token=generate_csrf())
 
 
 if __name__ == '__main__':
