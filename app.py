@@ -208,11 +208,12 @@ def feedback():
         flash('Feedback cannot be empty.', 'danger')
     return redirect(url_for('register'))
 
-@app.context_processor
-def inject_csrf_token():
-    return dict(csrf_token=generate_csrf())
-
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+
+@app.context_processor
+def inject_csrf_token():
+    return dict(csrf_token=generate_csrf())
